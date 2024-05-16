@@ -11,12 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aasjunior.machinelearningapp.R
 import com.aasjunior.machinelearningapp.ui.theme.MachineLearningAppTheme
 import com.aasjunior.machinelearningapp.ui.view.components.AlgorithmsMLSelectBox
+import com.aasjunior.machinelearningapp.ui.view.components.BaseContent
 import com.aasjunior.machinelearningapp.ui.view.components.DocumentPicker
 import com.aasjunior.machinelearningapp.ui.view.components.SelectHeaders
 import com.aasjunior.machinelearningapp.ui.viewmodel.HomeViewModel
@@ -35,60 +41,53 @@ import kotlinx.coroutines.launch
 fun HomeScreen(hvm: HomeViewModel){
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    var checkedState by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ){
-        ElevatedCard(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp)
-        ){
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 24.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Label(text = "Selecionar o Algoritmo ML:")
+    BaseContent {
+        Label(text = "Selecionar o Algoritmo ML:")
 
-                AlgorithmsMLSelectBox(hvm)
+        AlgorithmsMLSelectBox(hvm)
 
-                Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-                Label(text = "Inserir a Base de Dados:")
+        Label(text = "Inserir a Base de Dados:")
 
-                DocumentPicker()
-
-                Button(onClick = {
-                    /*TODO*/
-                    coroutineScope.launch {
-                        hvm.readLocalResCSV(context, R.raw.iris)
-                    }
-                }) {
-                    Text(text = "Usar base local")
-                }
-
-                Label(text = "Selecionar Atributos e Classe:")
-
-                SelectHeaders(hvm)
-
-                Spacer(modifier = Modifier.height(12.dp))
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Avançar")
-                }
-
-                /*Spacer(modifier = Modifier.height(12.dp))
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Executar Algoritmo")
-                }*/
-            }
+        if(!checkedState){
+            DocumentPicker()
         }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Checkbox(
+                checked = checkedState,
+                onCheckedChange = {
+                    checkedState = it
+                    if(it){
+                        coroutineScope.launch {
+                            hvm.readLocalResCSV(context, R.raw.iris)
+                        }
+                    }
+                }
+            )
+            Text(text = "Usar base local")
+        }
+
+        Label(text = "Selecionar Atributos e Classe:")
+
+        SelectHeaders(hvm)
+
+        Spacer(modifier = Modifier.height(12.dp))
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "Avançar")
+        }
+
+        /*Spacer(modifier = Modifier.height(12.dp))
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "Executar Algoritmo")
+        }*/
     }
 }
 

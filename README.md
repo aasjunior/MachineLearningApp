@@ -1,3 +1,5 @@
 # Machine Learning App
 
-![img.png](img.png)
+<p align="center">
+  <img src="img.png" width="300"/>
+</p>

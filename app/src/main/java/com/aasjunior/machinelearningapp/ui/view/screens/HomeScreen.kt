@@ -16,18 +16,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.aasjunior.machinelearningapp.R
 import com.aasjunior.machinelearningapp.ui.theme.MachineLearningAppTheme
 import com.aasjunior.machinelearningapp.ui.view.components.AlgorithmsMLSelectBox
 import com.aasjunior.machinelearningapp.ui.view.components.DocumentPicker
+import com.aasjunior.machinelearningapp.ui.view.components.SelectHeaders
 import com.aasjunior.machinelearningapp.ui.viewmodel.HomeViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(hvm: HomeViewModel){
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -57,10 +65,28 @@ fun HomeScreen(hvm: HomeViewModel){
 
                 DocumentPicker()
 
+                Button(onClick = {
+                    /*TODO*/
+                    coroutineScope.launch {
+                        hvm.readLocalResCSV(context, R.raw.iris)
+                    }
+                }) {
+                    Text(text = "Usar base local")
+                }
+
+                Label(text = "Selecionar Atributos e Classe:")
+
+                SelectHeaders(hvm)
+
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Executar Algoritmo")
+                    Text(text = "Avançar")
                 }
+
+                /*Spacer(modifier = Modifier.height(12.dp))
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Executar Algoritmo")
+                }*/
             }
         }
     }

@@ -1,8 +1,6 @@
 package com.aasjunior.machinelearningapp.domain.model
 
-import java.util.jar.Attributes
-
-data class DataModel(
+data class DataScheme(
     val src: String,
     val attributeHeaders: Set<String>,
     val classHeader: String

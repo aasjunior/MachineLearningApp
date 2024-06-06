@@ -52,7 +52,9 @@ fun HomeScreen(hvm: HomeViewModel){
                     horizontalArrangement = Arrangement.End
                 ){
                     if(selectedAlgorithm != AlgorithmsML.GeneticAlgorithm) NextButton{ step++ }
-                    else SubmitButton()
+                    else SubmitButton(){
+                        cou
+                    }
                 }
             }
             1 -> {
@@ -191,8 +193,8 @@ private fun NextButton(x: () -> Unit){
 }
 
 @Composable
-private fun SubmitButton(){
-    Button(onClick = {  }) {
+private fun SubmitButton(onClick: () -> Unit){
+    Button(onClick = onClick) {
         Text(text = "Executar Algoritmo")
     }
 }

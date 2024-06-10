@@ -1,12 +1,14 @@
 package com.aasjunior.machinelearningapp.config.retrofit
 
 import com.aasjunior.machinelearningapp.domain.model.DataScheme
+import com.aasjunior.machinelearningapp.domain.model.GeneticAlgorithmResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
+import retrofit2.Response
 import java.io.File
 
 class ApiServiceImplementation: ApiService {
@@ -15,6 +17,10 @@ class ApiServiceImplementation: ApiService {
         dataScheme: Map<String, RequestBody>
     ): ResponseBody {
         return RetrofitService.apiService.uploadFileWithPartMap(file, dataScheme)
+    }
+
+    override suspend fun getGeneticAlgorithmData(): Response<GeneticAlgorithmResponse> {
+        return RetrofitService.apiService.getGeneticAlgorithmData()
     }
 
     suspend fun uploadFileAndData(file: File, dataScheme: DataScheme): String{
@@ -39,7 +45,5 @@ class ApiServiceImplementation: ApiService {
         } catch (e: Exception) {
             "File and data upload failed: ${e.message}"
         }
-
-
     }
 }

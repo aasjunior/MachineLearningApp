@@ -3,12 +3,15 @@ package com.aasjunior.machinelearningapp.ui.viewmodel
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aasjunior.machinelearningapp.config.retrofit.ApiServiceImplementation
 import com.aasjunior.machinelearningapp.domain.enums.AlgorithmsML
 import com.aasjunior.machinelearningapp.domain.model.DataScheme
+import com.aasjunior.machinelearningapp.domain.model.GeneticAlgorithmResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.File
@@ -21,13 +24,30 @@ class HomeViewModel: ViewModel() {
     val selectedAlgorithm = MutableStateFlow<AlgorithmsML?>(null)
     val filePath = MutableStateFlow<String?>(null)
 
+    private val selectedFile = MutableStateFlow<File?>(null)
+
     private val _attributeHeaders = MutableStateFlow<Map<String, Boolean>>(emptyMap())
     val attributeHeaders: StateFlow<Map<String, Boolean>> = _attributeHeaders
 
     private val _classHeader = MutableStateFlow<String?>(null)
     val classHeader: StateFlow<String?> = _classHeader
 
+    private val _geneticAlgorithmData = MutableStateFlow<GeneticAlgorithmResponse?>(null)
+    val geneticAlgorithmData: StateFlow<GeneticAlgorithmResponse?> = _geneticAlgorithmData
 
+    fun fetchGeneticAlgorithmData() = viewModelScope.launch {
+        try {
+            val response = apiService.getGeneticAlgorithmData()
+            if (response.isSuccessful) {
+                _geneticAlgorithmData.value = response.body()
+                Log.i("fetch", "${geneticAlgorithmData.value}")
+            } else {
+                Log.e("fetchGeneticAlgorithmDataError", "Erro ao buscar dados do algoritmo genético: ${response.errorBody()}")
+            }
+        } catch (e: Exception) {
+            Log.e("fetchGeneticAlgorithmDataError", "Erro ao buscar dados do algoritmo genético: ${e.message}")
+        }
+    }
 
     suspend fun readCSV(file: File) = withContext(Dispatchers.IO){
         val reader = BufferedReader(FileReader(file))
@@ -36,6 +56,8 @@ class HomeViewModel: ViewModel() {
         _attributeHeaders.value = headerLine
             .split(",")
             .associateWith { false }
+
+        selectedFile.value = file
     }
 
     suspend fun readLocalResCSV(context: Context, resourceId: Int) = withContext(Dispatchers.IO){
@@ -46,6 +68,17 @@ class HomeViewModel: ViewModel() {
         _attributeHeaders.value = headerLine
             .split(",")
             .associateWith { false }
+
+        val tempFile = File.createTempFile("temp", null, context.cacheDir)
+        tempFile.deleteOnExit()
+
+        inputStream.use { input ->
+            tempFile.outputStream().use { fileOut ->
+                input.copyTo(fileOut)
+            }
+        }
+
+        selectedFile.value = tempFile
     }
 
     fun updateAttributeSelection(header: String, isSelected: Boolean){
@@ -61,15 +94,20 @@ class HomeViewModel: ViewModel() {
         selectedAlgorithm.value = algorithm
     }
 
-    suspend fun uploadFileAndData(file: File){
+    suspend fun uploadFileAndData(){
         try {
-            val dataScheme = DataScheme(
-                src = file.path,
-                attributeHeaders = _attributeHeaders.value.filterValues { it }.keys,
-                classHeader = _classHeader.value ?: ""
-            )
+            val file = selectedFile.value
+            if (file != null) {
+                val dataScheme = DataScheme(
+                    src = file.path,
+                    attributeHeaders = _attributeHeaders.value.filterValues { it }.keys,
+                    classHeader = _classHeader.value ?: ""
+                )
 
-            val result = apiService.uploadFileAndData(file, dataScheme)
+                val result = apiService.uploadFileAndData(file, dataScheme)
+            } else {
+                Log.e("uploadFileAndDataError", "Nenhum arquivo selecionado")
+            }
         }catch(e: Exception){
             Log.e("uploadFileAndDataError", e.message!!)
         }

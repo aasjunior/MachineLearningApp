@@ -34,6 +34,7 @@ import com.aasjunior.machinelearningapp.ui.theme.MachineLearningAppTheme
 import com.aasjunior.machinelearningapp.ui.view.components.AlgorithmsMLSelectBox
 import com.aasjunior.machinelearningapp.ui.view.components.BaseContent
 import com.aasjunior.machinelearningapp.ui.view.components.DocumentPicker
+import com.aasjunior.machinelearningapp.ui.view.components.ImageFromBase64
 import com.aasjunior.machinelearningapp.ui.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -41,8 +42,16 @@ import kotlinx.coroutines.launch
 fun HomeScreen(hvm: HomeViewModel){
     var step by remember { mutableStateOf(0) }
     val selectedAlgorithm by hvm.selectedAlgorithm.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     BaseContent {
+        val geneticAlgorithmData by hvm.geneticAlgorithmData.collectAsState()
+        Text(text = geneticAlgorithmData?.fitness ?: "")
+
+        val plotFitnessBase64 = hvm.geneticAlgorithmData.value?.plot_images?.plot_fitness
+        if (plotFitnessBase64 != null) {
+            ImageFromBase64(plotFitnessBase64)
+        }
         when(step){
             0 -> {
                 SelectAlgorithm(hvm)
@@ -52,7 +61,11 @@ fun HomeScreen(hvm: HomeViewModel){
                     horizontalArrangement = Arrangement.End
                 ){
                     if(selectedAlgorithm != AlgorithmsML.GeneticAlgorithm) NextButton{ step++ }
-                    else SubmitButton()
+                    else SubmitButton{
+                        coroutineScope.launch {
+                            hvm.fetchGeneticAlgorithmData()
+                        }
+                    }
                 }
             }
             1 -> {
@@ -89,6 +102,7 @@ fun HomeScreen(hvm: HomeViewModel){
             }
         }
 
+
     }
 }
 
@@ -106,27 +120,29 @@ private fun SelectAlgorithm(hvm: HomeViewModel){
 
     Label(text = "Inserir a Base de Dados:")
 
-    if(!checkedState){
+    if(hvm.selectedAlgorithm.value != AlgorithmsML.GeneticAlgorithm) {
         DocumentPicker()
-    }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Checkbox(
-            checked = checkedState,
-            onCheckedChange = {
-                checkedState = it
-                if(it){
-                    coroutineScope.launch {
-                        hvm.readLocalResCSV(context, R.raw.iris)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = checkedState,
+                onCheckedChange = {
+                    checkedState = it
+                    if (it) {
+                        coroutineScope.launch {
+                            hvm.readLocalResCSV(context, R.raw.iris)
+                        }
                     }
                 }
-            }
-        )
-        Text(text = "Usar base local")
+            )
+            Text(text = "Usar base local")
+        }
+    }else{
+
     }
 }
 
@@ -191,8 +207,8 @@ private fun NextButton(x: () -> Unit){
 }
 
 @Composable
-private fun SubmitButton(){
-    Button(onClick = {  }) {
+private fun SubmitButton(onClick: () -> Unit){
+    Button(onClick = onClick) {
         Text(text = "Executar Algoritmo")
     }
 }

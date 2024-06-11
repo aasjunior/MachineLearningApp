@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aasjunior.machinelearningapp.ui.theme.MachineLearningAppTheme
+import com.aasjunior.machinelearningapp.ui.view.screens.DecisionTreeScreen
 import com.aasjunior.machinelearningapp.ui.view.screens.GeneticAlgorithmScreen
 import com.aasjunior.machinelearningapp.ui.view.screens.HomeScreen
 import com.aasjunior.machinelearningapp.ui.view.screens.KnnScreen
@@ -26,7 +27,6 @@ class MainActivity : ComponentActivity() {
             val navController: NavHostController = rememberNavController()
 
             MachineLearningAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
                         composable("home") { HomeScreen(navController, hvm) }
                         composable("genetic-algorithm") { GeneticAlgorithmScreen(navController) }
                         composable("test-knn") { KnnScreen(navController) }
+                        composable("test-decision-tree") { DecisionTreeScreen(navController) }
                     }
                 }
             }

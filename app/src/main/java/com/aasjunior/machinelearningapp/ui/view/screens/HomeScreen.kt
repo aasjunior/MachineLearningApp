@@ -55,6 +55,8 @@ fun HomeScreen(
                             SubmitButton {
                                 if(selectedAlgorithm == AlgorithmsML.KNN)
                                     navController.navigate("test-knn")
+                                if(selectedAlgorithm == AlgorithmsML.DecisionTree)
+                                    navController.navigate("test-decision-tree")
                             }
                         }else {
                             NextButton{ step++ }

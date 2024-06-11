@@ -19,6 +19,12 @@ O Machine Learning App é um aplicativo desenvolvido com Kotlin, Android Studio 
 * VSCode
 <br>
 
+<div align="center">
+   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android"/>
+   <img src="https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white"/>
+   <img src="https://img.shields.io/badge/Jetpack%20Compose-FF4081?style=for-the-badge&logo=jetpack&logoColor=white" alt="Jetpack Compose"/>
+</div>
+
 ## Dependências
 
 Este projeto depende da seguinte APIs:

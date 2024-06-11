@@ -19,7 +19,7 @@ class GeneticAlgorithmViewModel: ViewModel() {
         fetchGeneticAlgorithmData()
     }
 
-    fun fetchGeneticAlgorithmData() = viewModelScope.launch {
+    private fun fetchGeneticAlgorithmData() = viewModelScope.launch {
         try {
             val response = apiService.getGeneticAlgorithmData()
             if (response.isSuccessful) {

@@ -12,11 +12,11 @@ import retrofit2.Response
 import java.io.File
 
 class ApiServiceImplementation: ApiService {
-    override suspend fun uploadFileWithPartMap(
+    override suspend fun knn(
         file: MultipartBody.Part,
         dataScheme: Map<String, RequestBody>
     ): ResponseBody {
-        return RetrofitService.apiService.uploadFileWithPartMap(file, dataScheme)
+        return RetrofitService.apiService.knn(file, dataScheme)
     }
 
     override suspend fun getGeneticAlgorithmData(): Response<GeneticAlgorithmResponse> {
@@ -44,7 +44,7 @@ class ApiServiceImplementation: ApiService {
         )
 
         return try {
-            val response = this.uploadFileWithPartMap(body, dataSchemeMap)
+            val response = this.knn(body, dataSchemeMap)
             "File and data uploaded successfully: ${response.string()}"
         } catch (e: Exception) {
             "File and data upload failed: ${e.message}"

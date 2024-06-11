@@ -15,7 +15,7 @@ import retrofit2.http.PartMap
 interface ApiService {
     @Multipart
     @POST("/knn")
-    suspend fun uploadFileWithPartMap(
+    suspend fun knn(
         @Part file: MultipartBody.Part,
         @PartMap dataScheme: Map<String, @JvmSuppressWildcards RequestBody>
     ): ResponseBody

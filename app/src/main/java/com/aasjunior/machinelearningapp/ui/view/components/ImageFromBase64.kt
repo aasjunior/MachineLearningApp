@@ -4,10 +4,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.unit.dp
 
 
 @Composable
@@ -17,7 +22,11 @@ fun ImageFromBase64(base64: String) {
         BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }.asImageBitmap()
 
-    Image(bitmap = imageBitmap, contentDescription = null)
+    Image(
+        modifier = Modifier.width(350.dp),
+        bitmap = imageBitmap,
+        contentDescription = null
+    )
 }
 
 @Composable

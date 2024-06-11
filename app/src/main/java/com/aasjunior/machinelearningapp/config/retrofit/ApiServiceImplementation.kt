@@ -23,6 +23,10 @@ class ApiServiceImplementation: ApiService {
         return RetrofitService.apiService.getGeneticAlgorithmData()
     }
 
+    override suspend fun knnPost(data: DataScheme, file: MultipartBody.Part): KnnResponse {
+        return RetrofitService.apiService.knnPost(data, file)
+    }
+
     suspend fun uploadFileAndData(file: File, dataScheme: DataScheme): String{
         val requestFile = file.asRequestBody("text/csv".toMediaType())
         val body = MultipartBody.Part.createFormData("file", file.name, requestFile)

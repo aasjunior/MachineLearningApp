@@ -6,7 +6,7 @@ O Machine Learning App é um aplicativo desenvolvido com Kotlin, Android Studio 
 
 <p align="center">
   <p align="center">
-    <img src="img.png" width="250"/>
+    <img src="docs/img.png" width="250"/>
   </p>
 </p>
 <br>

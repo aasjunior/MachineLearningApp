@@ -4,11 +4,13 @@
 O Machine Learning App é um aplicativo desenvolvido com Kotlin, Android Studio e Jetpack Compose, para aplicação de algoritmos de aprendizado de máquina e exibição dos resultados.
 </p>
 
-<p align="center">
-  <p align="center">
-    <img src="docs/img.png" width="250"/>
-  </p>
-</p>
+<div align="center">
+  <img src="docs/home.png" height="450"/>
+  <img src="docs/ml_selection.png" height="450"/>
+  <img src="docs/decision_tree.png" height="450"/>
+  <img src="docs/genetic_algorithm.png" height="450"/>
+  
+</div>
 <br>
 
 ## Pré-Requisitos

@@ -36,7 +36,7 @@ fun KnnScreen(navController: NavHostController){
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            item { Title("Algoritmo KNN") }
+            item { Title("K-Nearest Neighbors (KNN)") }
             item { TextLabel(label = "Número de exemplos:", value = "${knnData?.number_of_examples}") }
             item { TextLabel(label = "Número de classes:", value = "${knnData?.number_of_classes}") }
             item { TextLabel(label = "Número de atributos:", value = "${knnData?.number_of_attributes}") }

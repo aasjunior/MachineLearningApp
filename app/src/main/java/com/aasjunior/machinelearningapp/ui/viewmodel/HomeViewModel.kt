@@ -2,6 +2,7 @@ package com.aasjunior.machinelearningapp.ui.viewmodel
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.aasjunior.machinelearningapp.config.retrofit.ApiServiceImplementation
 import com.aasjunior.machinelearningapp.domain.enums.AlgorithmsML
@@ -28,6 +29,8 @@ class HomeViewModel: ViewModel() {
 
     private val _classHeader = MutableStateFlow<String?>(null)
     val classHeader: StateFlow<String?> = _classHeader
+
+    val useIrisData = mutableStateOf(false)
 
     suspend fun readCSV(file: File) = withContext(Dispatchers.IO){
         val reader = BufferedReader(FileReader(file))
@@ -85,6 +88,7 @@ class HomeViewModel: ViewModel() {
                 )
 
                 val result = apiService.uploadFileAndData(file, dataScheme)
+                Log.i("uploadFileAndData", "${result}")
             } else {
                 Log.e("uploadFileAndDataError", "Nenhum arquivo selecionado")
             }

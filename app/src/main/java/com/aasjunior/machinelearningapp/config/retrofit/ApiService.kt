@@ -1,7 +1,9 @@
 package com.aasjunior.machinelearningapp.config.retrofit
 
 import com.aasjunior.machinelearningapp.domain.model.DataScheme
+import com.aasjunior.machinelearningapp.domain.model.DecisionTreeResponse
 import com.aasjunior.machinelearningapp.domain.model.GeneticAlgorithmResponse
+import com.aasjunior.machinelearningapp.domain.model.KnnResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -29,6 +31,11 @@ interface ApiService {
 
     @GET("/genetic-algorithm")
     suspend fun getGeneticAlgorithmData(): Response<GeneticAlgorithmResponse>
-}
 
-data class KnnResponse(val result: Map<String, Any>)
+    @GET("/test-knn")
+    suspend fun getKnnData(): Response<KnnResponse>
+
+    @GET("/test-decision-tree")
+    suspend fun getDecisionTreeData(): Response<DecisionTreeResponse>
+
+}

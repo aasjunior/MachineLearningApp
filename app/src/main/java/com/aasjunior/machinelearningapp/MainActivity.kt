@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.aasjunior.machinelearningapp.ui.theme.MachineLearningAppTheme
 import com.aasjunior.machinelearningapp.ui.view.screens.GeneticAlgorithmScreen
 import com.aasjunior.machinelearningapp.ui.view.screens.HomeScreen
+import com.aasjunior.machinelearningapp.ui.view.screens.KnnScreen
 import com.aasjunior.machinelearningapp.ui.viewmodel.HomeViewModel
 
 class MainActivity : ComponentActivity() {
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController, startDestination = "home") {
                         composable("home") { HomeScreen(navController, hvm) }
                         composable("genetic-algorithm") { GeneticAlgorithmScreen(navController) }
+                        composable("test-knn") { KnnScreen(navController) }
                     }
                 }
             }

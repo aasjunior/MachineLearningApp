@@ -1,7 +1,9 @@
 package com.aasjunior.machinelearningapp.config.retrofit
 
 import com.aasjunior.machinelearningapp.domain.model.DataScheme
+import com.aasjunior.machinelearningapp.domain.model.DecisionTreeResponse
 import com.aasjunior.machinelearningapp.domain.model.GeneticAlgorithmResponse
+import com.aasjunior.machinelearningapp.domain.model.KnnResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -25,6 +27,14 @@ class ApiServiceImplementation: ApiService {
 
     override suspend fun knnPost(data: DataScheme, file: MultipartBody.Part): KnnResponse {
         return RetrofitService.apiService.knnPost(data, file)
+    }
+
+    override suspend fun getKnnData(): Response<KnnResponse> {
+        return RetrofitService.apiService.getKnnData()
+    }
+
+    override suspend fun getDecisionTreeData(): Response<DecisionTreeResponse> {
+        return RetrofitService.apiService.getDecisionTreeData()
     }
 
     suspend fun uploadFileAndData(file: File, dataScheme: DataScheme): String{

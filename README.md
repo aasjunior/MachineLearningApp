@@ -42,7 +42,7 @@ git clone https://github.com/aasjunior/MachineLearningApp.git
 
 3. Certifique-se de que o JDK está instalado e configurado corretamente
 
-4. Certifique-se de que o Mongodb está instalado e funcionando corretamente
+4. Certifique-se de que o Python está instalado e funcionando corretamente
 
 5. Configure a API mlapp-api pelo VS Code ou IDE de sua preferência. A API estará rodando em `http://127.0.0.1:8000`
 
